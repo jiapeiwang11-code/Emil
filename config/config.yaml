@@ -117,8 +117,6 @@ platforms:
       name: "Hacker News"
     - id: "solidot"
       name: "Solidot"
-    - id: "nowcoder"
-      name: "牛客网"
     - id: "producthunt"
       name: "ProductHunt"
     - id: "tieba"
