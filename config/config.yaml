@@ -168,7 +168,26 @@ rss:
     - id: "yahoo-finance"
       name: "雅虎财经"
       url: "https://finance.yahoo.com/news/rssindex"
+      
+    - id: "x-openai"
+      name: "X - OpenAI"
+      url: "https://rsshub.app/twitter/user/OpenAI"
 
+    - id: "x-figure"
+      name: "X - Figure"
+      url: "https://rsshub.app/twitter/user/Figure_robot"
+
+    - id: "youtube-openai"
+      name: "YouTube - OpenAI"
+      url: "https://rsshub.app/youtube/user/@OpenAI"
+
+    - id: "youtube-nvidia"
+      name: "YouTube - NVIDIA"
+      url: "https://rsshub.app/youtube/user/@NVIDIA"
+
+    - id: "tiktok-boston-dynamics"
+      name: "TikTok - Boston Dynamics"
+      url: "https://rsshub.app/tiktok/user/@bostondynamics/true"
     # 自定义源示例
     # - id: "custom-feed"
     #   name: "自定义源"
@@ -321,7 +340,12 @@ display:
   # 两者共享此处的平台/RSS 配置，但开关互相独立（可只开 AI 分析、不推送展示）
   standalone:
     platforms: ["zhihu", "wallstreetcn-hot"]     # 热榜平台 ID 列表（如 ["zhihu", "weibo"]）
-    rss_feeds: []                     # RSS 源 ID 列表（如 ["hacker-news"]）
+    rss_feeds:
+      - "x-openai"
+      - "x-figure"
+      - "youtube-openai"
+      - "youtube-nvidia"
+      - "tiktok-boston-dynamics"                    # RSS 源 ID 列表（如 ["hacker-news"]）
     max_items: 20                     # 每个源最多展示条数（0=不限制）
 
 
