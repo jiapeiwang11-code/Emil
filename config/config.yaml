@@ -146,7 +146,7 @@ rss:
   freshness_filter:
     enabled: true                     # 是否启用新鲜度过滤（默认启用）
 
-    max_age_days: 1                   # 最大文章年龄（天）
+    max_age_days:0                 # 最大文章年龄（天）
                                       # - 正整数：只推送 N 天内的文章
                                       # - 0：禁用过滤，推送所有文章
 
@@ -340,7 +340,7 @@ display:
   # 两者共享此处的平台/RSS 配置，但开关互相独立（可只开 AI 分析、不推送展示）
   standalone:
     platforms: ["zhihu", "wallstreetcn-hot"]     # 热榜平台 ID 列表（如 ["zhihu", "weibo"]）
-    rss_feeds: [ "x-openai", "x-figure", "youtube-openai","youtube-nvidia","tiktok-boston-dynamics"]
+    rss_feeds: [ "youtube-openai","youtube-nvidia"]
                    # RSS 源 ID 列表（如 ["hacker-news"]）
     max_items: 20                     # 每个源最多展示条数（0=不限制）
 
