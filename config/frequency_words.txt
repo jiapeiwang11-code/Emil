@@ -374,7 +374,7 @@
 /宇树|Unitree|优必选|UBTECH|傅利叶|智元机器人|达闼|乐聚|云深处|越疆|节卡|遨博|新松|埃斯顿|埃夫特|汇川技术|绿的谐波|中大力德|鸣志电器|禾川科技|柯力传感|步科股份/ => 国产机器人公司
 
 
-/Tesla|Optimus|Figure|Figure AI|Boston Dynamics|Atlas|Spot|Agility Robotics|Digit|1X|Apptronik|Sanctuary AI|ABB|FANUC|发那科|安川|KUKA|库卡|Universal Robots|UR|/ => 海外机器人公司
+/Tesla|Optimus|Figure|Figure AI|Boston Dynamics|Atlas|Spot|Agility Robotics|Digit|1X|Apptronik|Sanctuary AI|ABB|FANUC|发那科|安川|KUKA|库卡|Universal Robots|UR/ => 海外机器人公司
 
 
 /Tesla|特斯拉|Optimus|ROBOT|robot/ => 特斯拉机器人
