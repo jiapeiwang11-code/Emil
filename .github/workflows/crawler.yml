@@ -132,6 +132,55 @@ jobs:
             exit 1
           fi
 
+      - name: Validate notification prerequisites
+        if: success()
+        env:
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          STORAGE_HTML_ENABLED: ${{ vars.STORAGE_HTML_ENABLED }}
+        run: |
+          set -euo pipefail
+
+          EMAIL_CONFIG_COUNT=0
+          [ -n "${EMAIL_FROM}" ] && EMAIL_CONFIG_COUNT=$((EMAIL_CONFIG_COUNT + 1))
+          [ -n "${EMAIL_PASSWORD}" ] && EMAIL_CONFIG_COUNT=$((EMAIL_CONFIG_COUNT + 1))
+          [ -n "${EMAIL_TO}" ] && EMAIL_CONFIG_COUNT=$((EMAIL_CONFIG_COUNT + 1))
+
+          if [ "${EMAIL_CONFIG_COUNT}" -gt 0 ] && [ "${EMAIL_CONFIG_COUNT}" -lt 3 ]; then
+            echo "Error: Email secrets must be configured together: EMAIL_FROM, EMAIL_PASSWORD, EMAIL_TO"
+            exit 1
+          fi
+
+          if [ "${EMAIL_CONFIG_COUNT}" -eq 3 ] && [ "${STORAGE_HTML_ENABLED:-}" = "false" ]; then
+            echo "Error: STORAGE_HTML_ENABLED=false will disable HTML report generation and break email delivery"
+            exit 1
+          fi
+
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          import yaml
+
+          cfg = yaml.safe_load(Path("config/config.yaml").read_text(encoding="utf-8"))
+
+          rss_enabled = bool(((cfg.get("rss") or {}).get("enabled", False)))
+          notification_enabled = bool(((cfg.get("notification") or {}).get("enabled", False)))
+          html_enabled = bool((((cfg.get("storage") or {}).get("formats") or {}).get("html", False)))
+          filter_method = ((cfg.get("filter") or {}).get("method") or "keyword")
+          min_score = float(((cfg.get("ai_filter") or {}).get("min_score", 0) or 0))
+          email_ready = all(os.environ.get(name, "") for name in ("EMAIL_FROM", "EMAIL_PASSWORD", "EMAIL_TO"))
+
+          print(f"Config summary: rss.enabled={rss_enabled}, notification.enabled={notification_enabled}, storage.formats.html={html_enabled}")
+          print(f"Filter summary: filter.method={filter_method}, ai_filter.min_score={min_score}")
+
+          if not html_enabled and email_ready:
+              raise SystemExit("Email delivery requires storage.formats.html=true in config/config.yaml")
+
+          if filter_method == "ai" and min_score > 0.5:
+              print("Warning: ai_filter.min_score is greater than 0.5 and may filter out all content in GitHub Actions runs.")
+          PY
+
       - name: Run crawler
         if: success()
         env:

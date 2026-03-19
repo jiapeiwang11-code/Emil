@@ -160,18 +160,54 @@ rss:
     - id: "hacker-news"
       name: "Hacker News"
       url: "https://hnrss.org/frontpage"
+      max_items: 15
 
     - id: "ruanyifeng"
       name: "阮一峰的网络日志"
       url: "http://www.ruanyifeng.com/blog/atom.xml"
+      max_items: 10
       enabled: false                  # 禁用
       # max_age_days: 3               # 示例：推送 3 天内的文章（更新较慢的博客）
      
     - id: "yahoo-finance"
       name: "雅虎财经"
       url: "https://finance.yahoo.com/news/rssindex"
+      max_items: 15
 
     # 自定义源示例
+    # 社媒 RSS 模板（建议先启用 1-2 个源验证邮件链路）
+    # YouTube 官方 RSS：将 <CHANNEL_ID> 替换成真实频道 ID
+    # - id: "youtube-openai"
+    #   name: "YouTube - OpenAI"
+    #   url: "https://www.youtube.com/feeds/videos.xml?channel_id=<CHANNEL_ID>"
+    #   enabled: false
+    #   max_items: 10
+    #   max_age_days: 7
+
+    # X / Twitter 建议二选一，不要对同一账号同时启用两份 feed，避免重复推送和邮件过大
+    # 以下示例使用 RSSHub 路由，请替换成你自己的服务地址和账号名
+    # - id: "x-openai"
+    #   name: "X - OpenAI"
+    #   url: "https://<your-rsshub-domain>/twitter/user/OpenAI"
+    #   enabled: false
+    #   max_items: 10
+    #   max_age_days: 3
+
+    # - id: "twitter-openai"
+    #   name: "Twitter - OpenAI"
+    #   url: "https://<your-rsshub-domain>/twitter/user/OpenAI"
+    #   enabled: false
+    #   max_items: 10
+    #   max_age_days: 3
+
+    # TikTok 一般也通过 RSSHub / 第三方桥接服务提供 RSS
+    # - id: "tiktok-openai"
+    #   name: "TikTok - OpenAI"
+    #   url: "https://<your-rsshub-domain>/tiktok/user/<username>"
+    #   enabled: false
+    #   max_items: 10
+    #   max_age_days: 3
+
     # - id: "custom-feed"
     #   name: "自定义源"
     #   url: "https://example.com/feed.xml"
@@ -208,7 +244,7 @@ report:
 
   rank_threshold: 5                   # 排名高亮阈值（影响展示强调，不改变抓取范围）
 
-  max_news_per_keyword: 0             # 每个关键词/标签最大显示数量（0=不限制，仅影响展示裁剪）
+  max_news_per_keyword: 10            # 每个关键词/标签最大显示数量（0=不限制，仅影响展示裁剪）
 
 
 # ===============================================================
@@ -251,7 +287,7 @@ ai_filter:
   batch_interval: 2                       # 分批处理时，每批之间的等待时间（秒）
                                           # 避免频繁调用 API 触发限流，设为 0 则不等待
 
-  min_score: 0.7                          # 推送最低分数阈值（0.0 ~ 1.0）
+  min_score: 0.5                          # 推送最低分数阈值（0.0 ~ 1.0）
                                           # 0 = 不过滤；值越高越严格（推荐先用 0.5~0.7）
 
   # 兴趣描述文件
