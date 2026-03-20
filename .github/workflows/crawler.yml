@@ -138,6 +138,9 @@ jobs:
           EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          NTFY_SERVER_URL: ${{ secrets.NTFY_SERVER_URL }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
           STORAGE_HTML_ENABLED: ${{ vars.STORAGE_HTML_ENABLED }}
         run: |
           set -euo pipefail
@@ -170,15 +173,24 @@ jobs:
           filter_method = ((cfg.get("filter") or {}).get("method") or "keyword")
           min_score = float(((cfg.get("ai_filter") or {}).get("min_score", 0) or 0))
           email_ready = all(os.environ.get(name, "") for name in ("EMAIL_FROM", "EMAIL_PASSWORD", "EMAIL_TO"))
+          ntfy_cfg = (((cfg.get("notification") or {}).get("channels") or {}).get("ntfy") or {})
+          ntfy_server = os.environ.get("NTFY_SERVER_URL") or ntfy_cfg.get("server_url", "https://ntfy.sh")
+          ntfy_topic = os.environ.get("NTFY_TOPIC") or ntfy_cfg.get("topic", "")
+          ntfy_token = os.environ.get("NTFY_TOKEN") or ntfy_cfg.get("token", "")
+          ntfy_ready = bool(ntfy_server and ntfy_topic)
 
           print(f"Config summary: rss.enabled={rss_enabled}, notification.enabled={notification_enabled}, storage.formats.html={html_enabled}")
           print(f"Filter summary: filter.method={filter_method}, ai_filter.min_score={min_score}")
+          print(f"Push summary: email_ready={email_ready}, ntfy_ready={ntfy_ready}, ntfy_server={ntfy_server}, ntfy_topic={'set' if ntfy_topic else 'missing'}, ntfy_token={'set' if ntfy_token else 'missing'}")
 
           if not html_enabled and email_ready:
               raise SystemExit("Email delivery requires storage.formats.html=true in config/config.yaml")
 
           if filter_method == "ai" and min_score > 0.5:
               print("Warning: ai_filter.min_score is greater than 0.5 and may filter out all content in GitHub Actions runs.")
+
+          if not email_ready and not ntfy_ready:
+              print("Warning: neither email nor ntfy is fully configured; GitHub Actions run may complete without any push notification.")
           PY
 
       - name: Run crawler
