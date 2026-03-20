@@ -40,7 +40,7 @@ app:
 # 详细时间线图请查看 config/timeline.yaml
 # ===============================================================
 schedule:
-  enabled: false                         # 是否启用调度系统
+  enabled: true                         # 是否启用调度系统
   preset: "morning_evening"             # 预设模板名称（见上方说明）
 
 
@@ -160,7 +160,7 @@ rss:
     - id: "hacker-news"
       name: "Hacker News"
       url: "https://hnrss.org/frontpage"
-      max_items: 15
+  
 
     - id: "ruanyifeng"
       name: "阮一峰的网络日志"
@@ -172,7 +172,7 @@ rss:
     - id: "yahoo-finance"
       name: "雅虎财经"
       url: "https://finance.yahoo.com/news/rssindex"
-      max_items: 15
+     
 
     # 自定义源示例
     # 社媒 RSS 模板（建议先启用 1-2 个源验证邮件链路）
@@ -359,7 +359,7 @@ display:
   # 两者共享此处的平台/RSS 配置，但开关互相独立（可只开 AI 分析、不推送展示）
   standalone:
     platforms: ["zhihu", "wallstreetcn-hot"]     # 热榜平台 ID 列表（如 ["zhihu", "weibo"]）
-    rss_feeds: ["hacker-news", "yahoo-finance"]                     # RSS 源 ID 列表（如 ["hacker-news"]）
+    rss_feeds: []                     # RSS 源 ID 列表（如 ["hacker-news"]）
     max_items: 20                     # 每个源最多展示条数（0=不限制）
 
 
